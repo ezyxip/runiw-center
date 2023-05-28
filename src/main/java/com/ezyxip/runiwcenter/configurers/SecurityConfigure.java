@@ -12,11 +12,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
 import javax.sql.DataSource;
 
 @Configuration
 @EnableMethodSecurity(securedEnabled = true)
+@EnableJdbcHttpSession
 public class SecurityConfigure {
 
     @Bean
@@ -30,13 +32,11 @@ public class SecurityConfigure {
 
     @Bean
     public UserDetailsService userDetailsService(DataSource dataSource){
-        UserDetails startModule = User.builder()
-                .username("startModule")
-                .password("{noop}startMPassword")
-                .roles("AUTHSERVICE")
-                .build();
+
         JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
         //users.createUser(startModule);
         return users;
     }
+
+
 }
